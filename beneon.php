@@ -38,6 +38,16 @@ if ( ! defined( 'WPINC' ) ) {
 define( 'BENEON_VERSION', '1.0.0' );
 
 /**
+ * The plugin dir url.
+ */
+define( 'BENEON_URL', plugins_url( '/', __FILE__ ) );
+
+/**
+ * The plugin dir path.
+ */
+define( 'BENEON_DIR', __DIR__ );
+
+/**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-beneon-activator.php
  */
@@ -65,6 +75,12 @@ register_deactivation_hook( __FILE__, 'deactivate_beneon' );
 require plugin_dir_path( __FILE__ ) . 'includes/class-beneon.php';
 
 /**
+ * This utils functions.
+ */
+require plugin_dir_path( __FILE__ ) . 'includes/utils.php';
+
+
+/**
  * Begins execution of the plugin.
  *
  * Since everything within the plugin is registered via hooks,
@@ -77,6 +93,5 @@ function run_beneon() {
 
 	$plugin = new Beneon();
 	$plugin->run();
-
 }
 run_beneon();
