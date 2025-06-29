@@ -38,7 +38,14 @@ class Beneon_Admin {
 	 * @access   private
 	 * @var      string    $version    The current version of this plugin.
 	 */
-	private $version;
+       private $version;
+
+       /**
+        * Option name used to store settings.
+        *
+        * @var string
+        */
+       private $option_name = 'beneon_settings';
 
 	/**
 	 * Initialize the class and set its properties.
@@ -82,7 +89,7 @@ class Beneon_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_scripts() {
+       public function enqueue_scripts() {
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -96,8 +103,155 @@ class Beneon_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/beneon-admin.js', array( 'jquery' ), $this->version, false );
+               wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/beneon-admin.js', array( 'jquery' ), $this->version, false );
 
-	}
+       }
+
+       /**
+        * Add admin menu for plugin settings.
+        */
+       public function add_menu() {
+               add_menu_page(
+                       __( 'BeNeon Settings', 'beneon' ),
+                       'BeNeon',
+                       'manage_options',
+                       'beneon',
+                       array( $this, 'render_settings_page' )
+               );
+       }
+
+       /**
+        * Register plugin settings.
+        */
+       public function register_settings() {
+               register_setting( 'beneon', $this->option_name );
+
+               add_settings_section(
+                       'beneon_general',
+                       __( 'Configurator Options', 'beneon' ),
+                       '__return_false',
+                       'beneon'
+               );
+
+               add_settings_field(
+                       'fonts',
+                       __( 'Fonts (comma separated)', 'beneon' ),
+                       array( $this, 'field_fonts' ),
+                       'beneon',
+                       'beneon_general'
+               );
+
+               add_settings_field(
+                       'colors',
+                       __( 'Colors (comma separated hex values)', 'beneon' ),
+                       array( $this, 'field_colors' ),
+                       'beneon',
+                       'beneon_general'
+               );
+
+               add_settings_field(
+                       'sizes',
+                       __( 'Sizes (comma separated numbers)', 'beneon' ),
+                       array( $this, 'field_sizes' ),
+                       'beneon',
+                       'beneon_general'
+               );
+
+               add_settings_field(
+                       'backboards',
+                       __( 'Backboard shapes (comma separated)', 'beneon' ),
+                       array( $this, 'field_backboards' ),
+                       'beneon',
+                       'beneon_general'
+               );
+
+               add_settings_field(
+                       'scenes',
+                       __( 'Scenes (comma separated)', 'beneon' ),
+                       array( $this, 'field_scenes' ),
+                       'beneon',
+                       'beneon_general'
+               );
+
+               add_settings_field(
+                       'extras',
+                       __( 'Extra options (comma separated)', 'beneon' ),
+                       array( $this, 'field_extras' ),
+                       'beneon',
+                       'beneon_general'
+               );
+       }
+
+       /**
+        * Fonts input field.
+        */
+       public function field_fonts() {
+               $options = get_option( $this->option_name );
+               $fonts   = isset( $options['fonts'] ) ? esc_attr( $options['fonts'] ) : 'Arial,Courier New,Times New Roman';
+               echo '<input type="text" name="' . esc_attr( $this->option_name ) . '[fonts]" value="' . $fonts . '" class="regular-text" />';
+       }
+
+       /**
+        * Colors input field.
+        */
+       public function field_colors() {
+               $options = get_option( $this->option_name );
+               $colors  = isset( $options['colors'] ) ? esc_attr( $options['colors'] ) : '#ff0000,#00ff00,#0000ff';
+               echo '<input type="text" name="' . esc_attr( $this->option_name ) . '[colors]" value="' . $colors . '" class="regular-text" />';
+       }
+
+       /**
+        * Sizes input field.
+        */
+       public function field_sizes() {
+               $options = get_option( $this->option_name );
+               $sizes   = isset( $options['sizes'] ) ? esc_attr( $options['sizes'] ) : '60,80,100';
+               echo '<input type="text" name="' . esc_attr( $this->option_name ) . '[sizes]" value="' . $sizes . '" class="regular-text" />';
+       }
+
+       /**
+        * Backboard shapes input field.
+        */
+       public function field_backboards() {
+               $options    = get_option( $this->option_name );
+               $backboards = isset( $options['backboards'] ) ? esc_attr( $options['backboards'] ) : 'Cut to shape,Rectangle';
+               echo '<input type="text" name="' . esc_attr( $this->option_name ) . '[backboards]" value="' . $backboards . '" class="regular-text" />';
+       }
+
+       /**
+        * Scenes input field.
+        */
+       public function field_scenes() {
+               $options = get_option( $this->option_name );
+               $scenes  = isset( $options['scenes'] ) ? esc_attr( $options['scenes'] ) : 'Living room,Bedroom,Office';
+               echo '<input type="text" name="' . esc_attr( $this->option_name ) . '[scenes]" value="' . $scenes . '" class="regular-text" />';
+       }
+
+       /**
+        * Extra options input field.
+        */
+       public function field_extras() {
+               $options = get_option( $this->option_name );
+               $extras  = isset( $options['extras'] ) ? esc_attr( $options['extras'] ) : 'Dimmer,Remote';
+               echo '<input type="text" name="' . esc_attr( $this->option_name ) . '[extras]" value="' . $extras . '" class="regular-text" />';
+       }
+
+       /**
+        * Render settings page.
+        */
+       public function render_settings_page() {
+               ?>
+               <div class="wrap">
+                       <h1><?php esc_html_e( 'BeNeon Settings', 'beneon' ); ?></h1>
+                       <form method="post" action="options.php">
+                               <?php
+                               settings_fields( 'beneon' );
+                               do_settings_sections( 'beneon' );
+                               submit_button();
+                               ?>
+                       </form>
+               </div>
+               <?php
+       }
 
 }

@@ -29,8 +29,30 @@ class Beneon_Activator {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function activate() {
+        public static function activate() {
+                // Create a page for the configurator if it does not exist.
+                $page_id = get_option( 'beneon_configurator_page_id' );
 
-	}
+                if ( ! $page_id || ! get_post( $page_id ) ) {
+                        $page = get_page_by_path( 'neon-configurator' );
+
+                        if ( ! $page ) {
+                                $page_id = wp_insert_post( array(
+                                        'post_title'   => 'Neon Configurator',
+                                        'post_name'    => 'neon-configurator',
+                                        'post_content' => '[beneon_configurator]',
+                                        'post_status'  => 'publish',
+                                        'post_type'    => 'page',
+                                ) );
+                        } else {
+                                $page_id = $page->ID;
+                        }
+
+                        if ( $page_id ) {
+                                update_option( 'beneon_configurator_page_id', $page_id );
+                        }
+                }
+
+        }
 
 }
