@@ -65,6 +65,11 @@ class Beneon_Public {
         * Render the neon configurator shortcode.
         */
        public function render_configurator( $atts ) {
+               $settings = get_option( 'beneon_settings', array() );
+               $fonts  = isset( $settings['fonts'] ) ? array_map( 'trim', explode( ',', $settings['fonts'] ) ) : array( 'Arial', 'Courier New', 'Times New Roman' );
+               $colors = isset( $settings['colors'] ) ? array_map( 'trim', explode( ',', $settings['colors'] ) ) : array( '#ff0000', '#00ff00', '#0000ff' );
+               $sizes  = isset( $settings['sizes'] ) ? array_map( 'trim', explode( ',', $settings['sizes'] ) ) : array( '60', '80', '100' );
+
                ob_start();
                ?>
                <div id="beneon-configurator">
@@ -76,18 +81,28 @@ class Beneon_Public {
                        <label>
                                <?php esc_html_e( 'Font', 'beneon' ); ?>
                                <select id="beneon-font">
-                                       <option value="Arial">Arial</option>
-                                       <option value="Courier New">Courier New</option>
-                                       <option value="Times New Roman">Times New Roman</option>
+                                       <?php foreach ( $fonts as $font ) : ?>
+                                               <option value="<?php echo esc_attr( $font ); ?>"><?php echo esc_html( $font ); ?></option>
+                                       <?php endforeach; ?>
                                </select>
                        </label>
                        <label>
                                <?php esc_html_e( 'Color', 'beneon' ); ?>
-                               <input type="color" id="beneon-color" value="#ff0000" />
+                               <select id="beneon-color">
+                                       <?php foreach ( $colors as $color ) : ?>
+                                               <option value="<?php echo esc_attr( $color ); ?>" style="color:<?php echo esc_attr( $color ); ?>;">
+                                                       <?php echo esc_html( $color ); ?>
+                                               </option>
+                                       <?php endforeach; ?>
+                               </select>
                        </label>
                        <label>
                                <?php esc_html_e( 'Size', 'beneon' ); ?>
-                               <input type="number" id="beneon-size" value="60" />
+                               <select id="beneon-size">
+                                       <?php foreach ( $sizes as $size ) : ?>
+                                               <option value="<?php echo esc_attr( $size ); ?>"><?php echo esc_html( $size ); ?></option>
+                                       <?php endforeach; ?>
+                               </select>
                        </label>
                        <label>
                                <?php esc_html_e( 'Upload design', 'beneon' ); ?>
