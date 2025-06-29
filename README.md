@@ -13,7 +13,7 @@ your own) to access it.
 ## Admin Setup
 
 After activating the plugin, navigate to **BeNeon** in your WordPress admin menu.
-Here you can define available fonts, colors and size options for the
-configurator. These settings are used on the front‑end when rendering
-the shortcode.
+Here you can define available fonts, colors, sizes and other options like
+backboard shapes, scenes and extra features. These settings are used on the
+front‑end when rendering the shortcode.
  

@@ -66,14 +66,18 @@ class Beneon_Public {
         */
        public function render_configurator( $atts ) {
                $settings = get_option( 'beneon_settings', array() );
-               $fonts  = isset( $settings['fonts'] ) ? array_map( 'trim', explode( ',', $settings['fonts'] ) ) : array( 'Arial', 'Courier New', 'Times New Roman' );
-               $colors = isset( $settings['colors'] ) ? array_map( 'trim', explode( ',', $settings['colors'] ) ) : array( '#ff0000', '#00ff00', '#0000ff' );
-               $sizes  = isset( $settings['sizes'] ) ? array_map( 'trim', explode( ',', $settings['sizes'] ) ) : array( '60', '80', '100' );
+               $fonts      = isset( $settings['fonts'] ) ? array_map( 'trim', explode( ',', $settings['fonts'] ) ) : array( 'Arial', 'Courier New', 'Times New Roman' );
+               $colors     = isset( $settings['colors'] ) ? array_map( 'trim', explode( ',', $settings['colors'] ) ) : array( '#ff0000', '#00ff00', '#0000ff' );
+               $sizes      = isset( $settings['sizes'] ) ? array_map( 'trim', explode( ',', $settings['sizes'] ) ) : array( '60', '80', '100' );
+               $backboards = isset( $settings['backboards'] ) ? array_map( 'trim', explode( ',', $settings['backboards'] ) ) : array( 'Cut to shape', 'Rectangle' );
+               $scenes     = isset( $settings['scenes'] ) ? array_map( 'trim', explode( ',', $settings['scenes'] ) ) : array( 'Living room', 'Bedroom', 'Office' );
+               $extras     = isset( $settings['extras'] ) ? array_map( 'trim', explode( ',', $settings['extras'] ) ) : array( 'Dimmer', 'Remote' );
 
                ob_start();
                ?>
-               <div id="beneon-configurator">
-                       <div id="beneon-preview"></div>
+               <div id="beneon-configurator" class="beneon-container">
+                       <div id="beneon-preview" class="beneon-preview"></div>
+                       <div class="beneon-options">
                        <label>
                                <?php esc_html_e( 'Text', 'beneon' ); ?>
                                <input type="text" id="beneon-text" />
@@ -105,11 +109,34 @@ class Beneon_Public {
                                </select>
                        </label>
                        <label>
+                               <?php esc_html_e( 'Backboard', 'beneon' ); ?>
+                               <select id="beneon-backboard">
+                                       <?php foreach ( $backboards as $shape ) : ?>
+                                               <option value="<?php echo esc_attr( $shape ); ?>"><?php echo esc_html( $shape ); ?></option>
+                                       <?php endforeach; ?>
+                               </select>
+                       </label>
+                       <label>
+                               <?php esc_html_e( 'Scene', 'beneon' ); ?>
+                               <select id="beneon-scene">
+                                       <?php foreach ( $scenes as $scene ) : ?>
+                                               <option value="<?php echo esc_attr( $scene ); ?>"><?php echo esc_html( $scene ); ?></option>
+                                       <?php endforeach; ?>
+                               </select>
+                       </label>
+                       <fieldset>
+                               <legend><?php esc_html_e( 'Extras', 'beneon' ); ?></legend>
+                               <?php foreach ( $extras as $extra ) : ?>
+                                       <label class="beneon-extra"><input type="checkbox" value="<?php echo esc_attr( $extra ); ?>" /> <?php echo esc_html( $extra ); ?></label>
+                               <?php endforeach; ?>
+                       </fieldset>
+                       <label>
                                <?php esc_html_e( 'Upload design', 'beneon' ); ?>
                                <input type="file" id="beneon-file" />
                        </label>
                        <button type="button" class="button add-to-cart"><?php esc_html_e( 'Add to cart', 'beneon' ); ?></button>
                        <button type="button" class="button request-quote"><?php esc_html_e( 'Request a quote', 'beneon' ); ?></button>
+                       </div>
                </div>
                <?php
                return ob_get_clean();

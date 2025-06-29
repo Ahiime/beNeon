@@ -1,3 +1,6 @@
-#beneon-configurator{max-width:700px;margin:0 auto;}
-#beneon-preview{border:1px solid #ccc;padding:40px;text-align:center;margin-bottom:20px;}
+#beneon-configurator{max-width:900px;margin:20px auto;display:flex;gap:20px;}
+#beneon-preview{border:1px solid #ccc;padding:40px;text-align:center;margin-bottom:20px;flex:1;min-height:200px;display:flex;align-items:center;justify-content:center;background:#111;color:#fff;}
+#beneon-configurator .beneon-options{flex:1;}
 #beneon-configurator label{display:block;margin-top:10px;}
+#beneon-configurator fieldset{border:0;margin-top:10px;padding:0;}
+#beneon-configurator .beneon-extra{display:block;margin-top:5px;}

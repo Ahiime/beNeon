@@ -156,6 +156,30 @@ class Beneon_Admin {
                        'beneon',
                        'beneon_general'
                );
+
+               add_settings_field(
+                       'backboards',
+                       __( 'Backboard shapes (comma separated)', 'beneon' ),
+                       array( $this, 'field_backboards' ),
+                       'beneon',
+                       'beneon_general'
+               );
+
+               add_settings_field(
+                       'scenes',
+                       __( 'Scenes (comma separated)', 'beneon' ),
+                       array( $this, 'field_scenes' ),
+                       'beneon',
+                       'beneon_general'
+               );
+
+               add_settings_field(
+                       'extras',
+                       __( 'Extra options (comma separated)', 'beneon' ),
+                       array( $this, 'field_extras' ),
+                       'beneon',
+                       'beneon_general'
+               );
        }
 
        /**
@@ -183,6 +207,33 @@ class Beneon_Admin {
                $options = get_option( $this->option_name );
                $sizes   = isset( $options['sizes'] ) ? esc_attr( $options['sizes'] ) : '60,80,100';
                echo '<input type="text" name="' . esc_attr( $this->option_name ) . '[sizes]" value="' . $sizes . '" class="regular-text" />';
+       }
+
+       /**
+        * Backboard shapes input field.
+        */
+       public function field_backboards() {
+               $options    = get_option( $this->option_name );
+               $backboards = isset( $options['backboards'] ) ? esc_attr( $options['backboards'] ) : 'Cut to shape,Rectangle';
+               echo '<input type="text" name="' . esc_attr( $this->option_name ) . '[backboards]" value="' . $backboards . '" class="regular-text" />';
+       }
+
+       /**
+        * Scenes input field.
+        */
+       public function field_scenes() {
+               $options = get_option( $this->option_name );
+               $scenes  = isset( $options['scenes'] ) ? esc_attr( $options['scenes'] ) : 'Living room,Bedroom,Office';
+               echo '<input type="text" name="' . esc_attr( $this->option_name ) . '[scenes]" value="' . $scenes . '" class="regular-text" />';
+       }
+
+       /**
+        * Extra options input field.
+        */
+       public function field_extras() {
+               $options = get_option( $this->option_name );
+               $extras  = isset( $options['extras'] ) ? esc_attr( $options['extras'] ) : 'Dimmer,Remote';
+               echo '<input type="text" name="' . esc_attr( $this->option_name ) . '[extras]" value="' . $extras . '" class="regular-text" />';
        }
 
        /**
